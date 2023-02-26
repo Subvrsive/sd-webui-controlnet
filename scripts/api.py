@@ -1,3 +1,4 @@
+from pprint import pprint
 import numpy as np
 from typing import Any, List, Dict, Set, Union
 from fastapi import FastAPI, Body, HTTPException, Request, Response
@@ -282,6 +283,45 @@ def controlnet_api(_: gr.Blocks, app: FastAPI):
             do_not_save_grid=True,
         )
 
+        sd_params_dict = {
+            "sd_model": shared.sd_model,
+            "outpath_samples": opts.outdir_samples or opts.outdir_img2img_samples,
+            "outpath_grids": opts.outdir_grids or opts.outdir_img2img_grids,
+            "prompt": prompt,
+            "negative_prompt": negative_prompt,
+            "init_images": [decode_base64_to_image(x) for x in init_images],
+            "styles": [],
+            "seed": seed,
+            "subseed": subseed,
+            "subseed_strength": subseed_strength,
+            "seed_resize_from_h": -1,
+            "seed_resize_from_w": -1,
+            "seed_enable_extras": False,
+            "sampler_name": sampler_index,
+            "batch_size": batch_size,
+            "n_iter": n_iter,
+            "steps": steps,
+            "cfg_scale": cfg_scale,
+            "width": width,
+            "height": height,
+            "restore_faces": restore_faces,
+            "tiling": False,
+            "mask": mask,
+            "mask_blur": mask_blur,
+            "inpainting_fill": inpainting_fill,
+            "resize_mode": resize_mode,
+            "denoising_strength": denoising_strength,
+            "inpaint_full_res": inpaint_full_res,
+            "inpaint_full_res_padding": inpaint_full_res_padding,
+            "inpainting_mask_invert": inpainting_mask_invert,
+            "override_settings": override_settings,
+            "do_not_save_samples": True,
+            "do_not_save_grid": True
+        }
+
+        print("SD Parameters:")
+        pprint(sd_params_dict)
+
         # cn_image = Image.open(io.BytesIO(base64.b64decode(controlnet_input_image[0])))
         # cn_image_np = np.array(cn_image).astype('uint8')
         #
@@ -308,6 +348,9 @@ def controlnet_api(_: gr.Blocks, app: FastAPI):
             "control_net_guess_mode": controlnet_guessmode,
             "control_net_api_access": True,
         }
+
+        print("CN Args:")
+        pprint(cn_args)
 
         p.scripts = scripts.scripts_img2img
         p.script_args = [0, ]
