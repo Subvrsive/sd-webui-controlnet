@@ -323,21 +323,21 @@ def controlnet_api(_: gr.Blocks, app: FastAPI):
         print("SD Parameters:")
         pprint(sd_params_dict)
 
-        cn_image = Image.open(io.BytesIO(base64.b64decode(controlnet_input_image[0])))
-        cn_image_np = np.array(cn_image).astype('uint8')
+        # cn_image = Image.open(io.BytesIO(base64.b64decode(controlnet_input_image[0])))
+        # cn_image_np = np.array(cn_image).astype('uint8')
 
-        if controlnet_mask == [] :
-            cn_mask_np = np.zeros(shape=(512, 512, 3)).astype('uint8')
-        else:
-            cn_mask = Image.open(io.BytesIO(base64.b64decode(controlnet_mask[0])))
-            cn_mask_np = np.array(cn_mask).astype('uint8')
+        # if controlnet_mask == [] :
+        #     cn_mask_np = np.zeros(shape=(512, 512, 3)).astype('uint8')
+        # else:
+        #     cn_mask = Image.open(io.BytesIO(base64.b64decode(controlnet_mask[0])))
+        #     cn_mask_np = np.array(cn_mask).astype('uint8')
      
         cn_args = {
             "control_net_enabled": True,
             "control_net_module": controlnet_module,
             "control_net_model": controlnet_model,
             "control_net_weight": controlnet_weight,
-            "control_net_image": {'image': cn_image_np, 'mask': cn_mask_np},
+            # "control_net_image": {'image': cn_image_np, 'mask': cn_mask_np},
             "control_net_scribble_mode": False,
             "control_net_resize_mode": controlnet_resize_mode,
             "control_net_rgbbgr_mode": False,
