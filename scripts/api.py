@@ -241,7 +241,8 @@ def controlnet_api(_: gr.Blocks, app: FastAPI):
         restore_faces: bool = Body(True, title="Restore Faces"),
         include_init_images: bool = Body(True, title="Include Init Images"),
         override_settings: Dict[str, Any] = Body(None, title="Override Settings"),
-        override_settings_restore_afterwards: bool = Body(True, title="Restore Override Settings Afterwards"),    
+        override_settings_restore_afterwards: bool = Body(True, title="Restore Override Settings Afterwards"),
+        initial_noise_multiplier: float = 1.0
         ):
 
         if mask:
@@ -281,10 +282,10 @@ def controlnet_api(_: gr.Blocks, app: FastAPI):
             override_settings=override_settings,
             do_not_save_samples=True,
             do_not_save_grid=True,
+            initial_noise_multiplier=initial_noise_multiplier
         )
 
         sd_params_dict = {
-            "sd_model": shared.sd_model,
             "outpath_samples": opts.outdir_samples or opts.outdir_img2img_samples,
             "outpath_grids": opts.outdir_grids or opts.outdir_img2img_grids,
             "prompt": prompt,
